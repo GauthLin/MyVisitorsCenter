@@ -41,6 +41,7 @@ public class Main {
 
                 // Vérification du pays choisi
                 case COUNTRY_VERIFICATION:
+                    // Lecture du fichier country.txt
                     try {
                         BufferedReader reader = new BufferedReader(new FileReader("src/Data/country.txt"));
                         boolean isCountryExists = false;
@@ -112,6 +113,7 @@ public class Main {
                         break;
                     }
 
+                    // Vérification du pays choisi
                     if (!cities.contains(city.toUpperCase())) {
                         System.out.println("Cette ville n'est pas disponible pour ce pays.");
                         nextstate = state;
@@ -145,11 +147,11 @@ public class Main {
                 case ACTIVITIES_CREATION:
                     System.out.println("Vous avez prévu un voyage de "+ nbDays +" jour(s) à "+ city +". La proposition des activités est listée ci-dessous.");
 
-                    // TODO Calculer la proposition des activités
+                    // TODO: Calculer la proposition des activités
 
                     System.out.println("Voulez-vous recréer un nouveau programme d'activités ? [oui/non]");
 
-                    // Recréation d'un programme ou pas ?
+                    // Recréation d'un programme d'activités ou pas ?
                     if (scanner.nextLine().toUpperCase().equals("OUI")) {
                         nextstate = COUNTRY_SELECTION;
                         System.out.println("\n--------------------------------------------");
