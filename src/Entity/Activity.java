@@ -3,18 +3,20 @@ package Entity;
 // TODO: Créer une méthode toString
 public class Activity
 {
-    //private final int id;
+    private int id;
     private String name;
     private String description;
     private Time time;
-    private String type;
+    private Category category;
     private int rating;
+    private City city;
 
-    public Activity(String name, String description, int hours, int minutes, String type, int rating) {
+    public Activity(String name, String description, int hours, int minutes, Category category, int rating, City city) {
         this.name = name;
         this.description = description;
         this.time = new Time(hours, minutes);
-        this.type = type;
+        this.category = category;
+        this.city = city;
 
         try {
             this.setRating(rating);
@@ -23,9 +25,13 @@ public class Activity
         }
     }
 
-//    public int getId() {
-//        return this.id;
-//    }
+    public int getId() {
+        return this.id;
+    }
+
+    public void setID(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return this.name;
@@ -51,12 +57,12 @@ public class Activity
         this.time = time;
     }
 
-    public String getType() {
-        return this.type;
+    public Category getCategory() {
+        return this.category;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public int getRating() {
@@ -71,5 +77,13 @@ public class Activity
         }
 
         this.rating = rating;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 }

@@ -5,30 +5,25 @@ import java.util.ArrayList;
 // TODO: Créer une méthode toString
 public class Country
 {
-    private String code;
+    private int id;
     private String name;
     private ArrayList<City> cities = new ArrayList<>();
 
-    public Country(String code, String name) {
-        try {
-            this.setCode(code);
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
-
+    public Country(int id, String name) {
+        this.id = id;
         this.name = name;
     }
 
-    public String getCode() {
-        return this.code;
+    public Country(String name) {
+        this.name = name;
     }
 
-    public void setCode(String code) throws Exception {
-        if (code.length() != 2) {
-            throw new Exception("Le code du pays doit contenir 2 caractères.");
-        }
+    public int getId() {
+        return id;
+    }
 
-        this.code = code.toUpperCase();
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
