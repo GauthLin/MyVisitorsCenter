@@ -3,6 +3,7 @@ package Listener.City;
 
 import Entity.City;
 import Entity.Country;
+import Listener.CloseFrameListener;
 import Repository.CityRepository;
 import Repository.CountryRepository;
 
@@ -54,47 +55,15 @@ public class CityManagerListener implements ActionListener {
         } catch (SQLException | ClassNotFoundException e1) {
             JOptionPane.showMessageDialog(frame, e1.getMessage());
         }
-        JComboBox countryList = new JComboBox(countryModelList);
+        JComboBox<String> countryList = new JComboBox<>(countryModelList);
         newCityPanel.add(countryList);
 
         newCityPanel.add(new JLabel("Nom de la ville"));
         JTextField cityNameInput = new JTextField(15);
         newCityPanel.add(cityNameInput);
+
         JButton addCityBtn = new JButton("Ajouter");
-        addCityBtn.addActionListener(new ActionListener() {
-            @Override
-            // Insert the new city in the database and update the GUI
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    // If no country selected
-                    if (countryList.getSelectedIndex() == 0) {
-                        JOptionPane.showMessageDialog(frame, "Veuillez choisir un pays !");
-                        return;
-                    }
-                    // If a country is selected
-                    Country country = new CountryRepository().getCountryByName(String.valueOf(countryList.getSelectedItem()));
-                    City newCity = new City(cityNameInput.getText(), country.getId());
-
-                    new CityRepository().insertCity(newCity);
-
-                    // Update the GUI
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            Vector<String> vec = new Vector<>();
-                            vec.add(String.valueOf(newCity.getCountryId()));
-                            vec.add(newCity.getName());
-                            tableCityModel.addRow(vec);
-                            cityNameInput.setText(null);
-                            cityNameInput.requestFocusInWindow();
-                            countryList.setSelectedIndex(0);
-                        }
-                    });
-                } catch (ClassNotFoundException | SQLException e1) {
-                    JOptionPane.showMessageDialog(frame, e1.getMessage());
-                }
-            }
-        });
+        addCityBtn.addActionListener(new AddCityListener(frame, countryList, cityNameInput, tableCityModel));
         newCityPanel.add(addCityBtn);
 
         // List all the cities
@@ -117,22 +86,13 @@ public class CityManagerListener implements ActionListener {
 
         // ACTION panel
         JButton delBtn = new JButton("Supprimer");
-        delBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                for (Integer i :
-                        citiesTable.getSelectedRows()) {
-                    try {
-                        City city = new CityRepository().getCityByName(String.valueOf(tableCityModel.getValueAt(i, 1)));
-                        new CityRepository().deleteCity(city);
-                        tableCityModel.removeRow(i);
-                    } catch (SQLException | ClassNotFoundException e1) {
-                        JOptionPane.showMessageDialog(frame, e1.getMessage());
-                    }
-                }
-            }
-        });
+        delBtn.addActionListener(new DeleteCityListener(frame, citiesTable, tableCityModel));
         actionPanel.add(delBtn);
+
+        JButton closeBt = new JButton("Fermer la fenêtre");
+        closeBt.addActionListener(new CloseFrameListener(frame));
+        actionPanel.add(closeBt);
+
 
         // Layout of the frame
         frame.add(newCityPanel, BorderLayout.NORTH);

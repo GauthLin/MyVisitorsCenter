@@ -5,13 +5,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Close a the frame
+ * Closes the frame
  */
 public class CloseFrameListener implements ActionListener
 {
     private final JFrame frame;
 
-    public CloseFrameListener(final JFrame frame) {
+    public CloseFrameListener(JFrame frame) {
         super();
         this.frame = frame;
     }

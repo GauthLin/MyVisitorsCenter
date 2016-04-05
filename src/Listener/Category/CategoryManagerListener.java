@@ -1,6 +1,7 @@
 package Listener.Category;
 
 import Entity.Category;
+import Listener.CloseFrameListener;
 import Repository.CategoryRepository;
 
 import javax.swing.*;
@@ -106,6 +107,11 @@ public class CategoryManagerListener implements ActionListener
         });
         actionPanel.add(delCatBtn);
 
+        JButton closeBt = new JButton("Fermer la fenêtre");
+        closeBt.addActionListener(new CloseFrameListener(frame));
+        actionPanel.add(closeBt);
+
+        // Layout of the frame
         frame.add(newCategoryPanel, BorderLayout.NORTH);
         frame.add(categoriesPanel, BorderLayout.CENTER);
         frame.add(actionPanel, BorderLayout.SOUTH);
