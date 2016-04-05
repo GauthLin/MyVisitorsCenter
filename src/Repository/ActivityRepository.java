@@ -18,8 +18,8 @@ public class ActivityRepository
     private ActivityManager activityManager;
 
     public ActivityRepository() throws ClassNotFoundException, SQLException {
-        this.dbManager = new DBManager();
-        this.activityManager = new ActivityManager();
+        dbManager = new DBManager();
+        activityManager = new ActivityManager();
     }
 
     /**
@@ -28,10 +28,8 @@ public class ActivityRepository
      * @param activity The activity to add
      * @throws SQLException
      */
-    public void insertActivity(Activity activity) throws SQLException {
-        this.dbManager.getStatement().executeUpdate("INSERT INTO activity(name, description, hours, minutes, category_id, rating, city_id) VALUES ('"+ activity.getName() +"', '"+ activity.getDescription() +"', "+ activity.getTime().getHours() +", "+ activity.getTime().getMinutes() +", '"+ activity.getCategory().getId() +"', "+ activity.getRating() +", "+ activity.getCity().getId() +")");
-
-        this.dbManager.closeConnection();
+    public void insertActivity(Activity activity) throws SQLException, ClassNotFoundException {
+        dbManager.executeUpdate("INSERT INTO activity(name, description, hours, minutes, category_id, rating, city_id) VALUES ('"+ activity.getName() +"', '"+ activity.getDescription() +"', "+ activity.getTime().getHours() +", "+ activity.getTime().getMinutes() +", '"+ activity.getCategory().getId() +"', "+ activity.getRating() +", "+ activity.getCity().getId() +")");
     }
 
     /**
@@ -41,15 +39,13 @@ public class ActivityRepository
      * @return A list of activities
      * @throws SQLException
      */
-    public ArrayList<Activity> getActivitiesByCity(City city) throws SQLException {
-        ResultSet resultSet = this.dbManager.getStatement().executeQuery("SELECT * FROM activity INNER JOIN category ON category.id = activity.category_id WHERE city_id="+ city.getId() +" ORDER BY activity.name ASC");
+    public ArrayList<Activity> getActivitiesByCity(City city) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = dbManager.executeQuery("SELECT * FROM activity INNER JOIN category ON category.id = activity.category_id WHERE city_id="+ city.getId() +" ORDER BY activity.name ASC");
         ArrayList<Activity> activities = new ArrayList<>();
 
         while (resultSet.next()) {
             activities.add(activityManager.convertResultSet2Activity(resultSet, city));
         }
-
-        this.dbManager.closeConnection();
 
         return activities;
     }

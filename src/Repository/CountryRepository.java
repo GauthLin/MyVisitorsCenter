@@ -13,8 +13,8 @@ public class CountryRepository
     private CountryManager countryManager;
 
     public CountryRepository() throws ClassNotFoundException, SQLException {
-        this.dbManager = new DBManager();
-        this.countryManager = new CountryManager();
+        dbManager = new DBManager();
+        countryManager = new CountryManager();
     }
 
     /**
@@ -27,7 +27,7 @@ public class CountryRepository
      * TODO: get the last id
      */
     public Country insertCountry(Country country) throws SQLException, ClassNotFoundException {
-        this.dbManager.executeUpdate("INSERT INTO country(name) VALUES ('"+ country.getName() +"')");
+        dbManager.executeUpdate("INSERT INTO country(name) VALUES ('"+ country.getName() +"')");
 
         return country;
     }
@@ -39,7 +39,7 @@ public class CountryRepository
      * @throws SQLException
      */
     public void deleteCountryByName(String name) throws SQLException, ClassNotFoundException {
-        this.dbManager.executeUpdate("DELETE FROM country WHERE name='"+ name +"'");
+        dbManager.executeUpdate("DELETE FROM country WHERE name='"+ name +"'");
     }
 
     /**
@@ -49,7 +49,7 @@ public class CountryRepository
      * @throws SQLException
      */
     public ArrayList<Country> getCountries() throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = this.dbManager.executeQuery("SELECT * FROM country ORDER BY name ASC");
+        ResultSet resultSet = dbManager.executeQuery("SELECT * FROM country ORDER BY name ASC");
 
         ArrayList<Country> countries = new ArrayList<>();
         while (resultSet.next()) {
@@ -66,7 +66,7 @@ public class CountryRepository
      * @throws SQLException
      */
     public Country getCountryByName(String name) throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = this.dbManager.executeQuery("SELECT * FROM country WHERE name='"+ name +"'");
+        ResultSet resultSet = dbManager.executeQuery("SELECT * FROM country WHERE name='"+ name +"'");
 
         return countryManager.convertResultSet2Country(resultSet);
     }

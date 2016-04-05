@@ -1,6 +1,7 @@
 package Listener.Country;
 
 import Entity.Country;
+import Listener.CloseFrameListener;
 import Repository.CountryRepository;
 
 import javax.swing.*;
@@ -114,6 +115,10 @@ public class CountryManagerListener implements ActionListener
             }
         });
         actionPanel.add(deleteBtn);
+        JButton closeBtn = new JButton("Fermer la fenêtre");
+        closeBtn.addActionListener(new CloseFrameListener(frame));
+        actionPanel.add(closeBtn);
+
 
         frame.add(headerPanel, BorderLayout.NORTH);
         frame.add(countriesPanel, BorderLayout.CENTER);

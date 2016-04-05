@@ -14,8 +14,8 @@ public class CityRepository
     private ActivityManager activityManager;
 
     public CityRepository() throws ClassNotFoundException, SQLException {
-        this.dbManager = new DBManager();
-        this.activityManager = new ActivityManager();
+        dbManager = new DBManager();
+        activityManager = new ActivityManager();
     }
 
     /**
@@ -24,15 +24,13 @@ public class CityRepository
      * @return List of cities
      * @throws SQLException
      */
-    public ArrayList<City> getCities() throws SQLException {
-        ResultSet resultSet = this.dbManager.getStatement().executeQuery("SELECT * FROM city");
+    public ArrayList<City> getCities() throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = dbManager.executeQuery("SELECT * FROM city");
         ArrayList<City> cities = new ArrayList<>();
 
         while (resultSet.next()) {
             cities.add(new City(resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3)));
         }
-
-        this.dbManager.closeConnection();
 
         return cities;
     }
@@ -46,11 +44,10 @@ public class CityRepository
      *
      * TODO: Get the last insert id
      */
-    public City insertCity(City city) throws SQLException {
-        this.dbManager.getStatement().executeUpdate("INSERT INTO city(name, country_id) VALUES ('"+ city.getName() +"', "+ city.getCountryId() +")");
+    public City insertCity(City city) throws SQLException, ClassNotFoundException {
+        dbManager.executeUpdate("INSERT INTO city(name, country_id) VALUES ('"+ city.getName() +"', "+ city.getCountryId() +")");
 
         City newCity = new City(city.getName(), city.getCountryId());
-        this.dbManager.closeConnection();
 
         return newCity;
     }
@@ -62,16 +59,14 @@ public class CityRepository
      * @return city
      * @throws SQLException
      */
-    public City getCityByName(String name) throws SQLException {
-        ResultSet resultSet = this.dbManager.getStatement().executeQuery("SELECT * FROM city WHERE name='"+ name +"'");
+    public City getCityByName(String name) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = dbManager.executeQuery("SELECT * FROM city WHERE name='"+ name +"'");
         City city = new City(resultSet.getInt(1), name, resultSet.getInt(3));
 
-        ResultSet resultSet1 = this.dbManager.getStatement().executeQuery("SELECT * FROM activity INNER JOIN category ON category.id = activity.category_id WHERE city_id='"+ city.getId() +"'");
+        ResultSet resultSet1 = dbManager.executeQuery("SELECT * FROM activity INNER JOIN category ON category.id = activity.category_id WHERE city_id='"+ city.getId() +"'");
         while (resultSet1.next()) {
             city.addActivity(activityManager.convertResultSet2Activity(resultSet1, city));
         }
-
-        this.dbManager.closeConnection();
 
         return city;
     }
@@ -82,9 +77,7 @@ public class CityRepository
      * @param city The city to delete
      * @throws SQLException
      */
-    public void deleteCity(City city) throws SQLException {
-        this.dbManager.getStatement().executeUpdate("DELETE FROM city WHERE id="+ city.getId());
-
-        this.dbManager.closeConnection();
+    public void deleteCity(City city) throws SQLException, ClassNotFoundException {
+        dbManager.executeUpdate("DELETE FROM city WHERE id="+ city.getId());
     }
 }
