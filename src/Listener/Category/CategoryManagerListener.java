@@ -1,7 +1,7 @@
 package Listener.Category;
 
 import Entity.Category;
-import Entity.DBManager;
+import Repository.CategoryRepository;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  * Open a new window to manage (delete and create) the categories of the activities.
@@ -48,10 +47,9 @@ public class CategoryManagerListener implements ActionListener
             // Insert the new category in the database and update the GUI
             public void actionPerformed(ActionEvent e) {
                 try {
-                    DBManager manager = new DBManager();
                     Category newCat = new Category(catNameInput.getText());
 
-                    Category cat = manager.insertCategory(newCat);
+                    Category cat = new CategoryRepository().insertCategory(newCat);
 
                     // Update the GUI
                     SwingUtilities.invokeLater(new Runnable() {
@@ -71,7 +69,7 @@ public class CategoryManagerListener implements ActionListener
 
         // List all the categories in a JList
         try {
-            for (Category category: new DBManager().getCategories()) {
+            for (Category category: new CategoryRepository().getCategories()) {
                 listCatModel.addElement(category.getName());
             }
         } catch (ClassNotFoundException | SQLException e1) {
@@ -98,7 +96,7 @@ public class CategoryManagerListener implements ActionListener
                         catList.getSelectedIndices()) {
                     String catName = (String) listCatModel.getElementAt(i);
                     try {
-                        new DBManager().deleteCategoryByName(catName);
+                        new CategoryRepository().deleteCategoryByName(catName);
                         listCatModel.remove(i);
                     } catch (SQLException | ClassNotFoundException e1) {
                         JOptionPane.showMessageDialog(null, e1.getMessage());

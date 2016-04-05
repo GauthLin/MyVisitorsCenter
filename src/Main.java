@@ -2,6 +2,8 @@ import Entity.*;
 import Listener.Category.CategoryManagerListener;
 import Listener.City.CityManagerListener;
 import Listener.Country.CountryManagerListener;
+import Repository.CategoryRepository;
+import Repository.CountryRepository;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,8 +11,6 @@ import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        DBManager dbmanager = new DBManager();
-
         JFrame frame = new JFrame("Centre de visiteurs");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(800, 800);
@@ -19,8 +19,9 @@ public class Main {
         // HEADER
         DefaultComboBoxModel<String> countryNameList = new DefaultComboBoxModel<>();
         countryNameList.addElement("-- Sélectionnez un pays --");
+        CountryRepository countryRepository = new CountryRepository();
         for (Country country :
-                new DBManager().getCountries()) {
+                countryRepository.getCountries()) {
             countryNameList.addElement(country.getName());
         }
         JComboBox countryList = new JComboBox(countryNameList);
@@ -46,7 +47,7 @@ public class Main {
         DefaultListModel<String> modelList = new DefaultListModel<>();
         JList<String> catList = new JList<>(modelList);
         for (Category category :
-                dbmanager.getCategories()) {
+                new CategoryRepository().getCategories()) {
             modelList.addElement(category.getName());
         }
         catList.setBorder(BorderFactory.createLineBorder(Color.black));

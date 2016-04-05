@@ -1,7 +1,7 @@
 package Listener.Country;
 
 import Entity.Country;
-import Entity.DBManager;
+import Repository.CountryRepository;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,7 +49,7 @@ public class CountryManagerListener implements ActionListener
                 String countryName = countryNameTF.getText();
 
                 try {
-                    new DBManager().insertCountry(new Country(countryName));
+                    new CountryRepository().insertCountry(new Country(countryName));
 
                     // Update the GUI
                     SwingUtilities.invokeLater(new Runnable() {
@@ -71,7 +71,7 @@ public class CountryManagerListener implements ActionListener
         // COUNTRIES panel
         try {
             for (Country country :
-                    new DBManager().getCountries()) {
+                    new CountryRepository().getCountries()) {
                 countryModelList.addElement(country.getName());
             }
         } catch (SQLException | ClassNotFoundException e1) {
@@ -98,7 +98,7 @@ public class CountryManagerListener implements ActionListener
                 for (Integer i :
                         countryList.getSelectedIndices()) {
                     try {
-                        new DBManager().deleteCountryByName(countryModelList.getElementAt(i));
+                        new CountryRepository().deleteCountryByName(countryModelList.getElementAt(i));
 
                         // Update the GUI
                         SwingUtilities.invokeLater(new Runnable() {

@@ -3,7 +3,8 @@ package Listener.City;
 
 import Entity.City;
 import Entity.Country;
-import Entity.DBManager;
+import Repository.CityRepository;
+import Repository.CountryRepository;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -11,7 +12,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Vector;
 
 /**
@@ -48,7 +48,7 @@ public class CityManagerListener implements ActionListener {
         try {
             countryModelList.addElement("-- Choisissez un pays --");
             for (Country country :
-                    new DBManager().getCountries()) {
+                    new CountryRepository().getCountries()) {
                 countryModelList.addElement(country.getName());
             }
         } catch (SQLException | ClassNotFoundException e1) {
@@ -72,10 +72,10 @@ public class CityManagerListener implements ActionListener {
                         return;
                     }
                     // If a country is selected
-                    Country country = new DBManager().getCountryByName(String.valueOf(countryList.getSelectedItem()));
+                    Country country = new CountryRepository().getCountryByName(String.valueOf(countryList.getSelectedItem()));
                     City newCity = new City(cityNameInput.getText(), country.getId());
 
-                    new DBManager().insertCity(newCity);
+                    new CityRepository().insertCity(newCity);
 
                     // Update the GUI
                     SwingUtilities.invokeLater(new Runnable() {
@@ -104,7 +104,7 @@ public class CityManagerListener implements ActionListener {
         try {
             // Parcours toutes les villes afin de les afficher
             for (City city :
-                    new DBManager().getCities()) {
+                    new CityRepository().getCities()) {
                 Vector<String> vector = new Vector<>();
                 vector.add(String.valueOf(city.getCountryId()));
                 vector.add(city.getName());
@@ -123,8 +123,8 @@ public class CityManagerListener implements ActionListener {
                 for (Integer i :
                         citiesTable.getSelectedRows()) {
                     try {
-                        City city = new DBManager().getCityByName(String.valueOf(tableCityModel.getValueAt(i, 1)));
-                        new DBManager().deleteCity(city);
+                        City city = new CityRepository().getCityByName(String.valueOf(tableCityModel.getValueAt(i, 1)));
+                        new CityRepository().deleteCity(city);
                         tableCityModel.removeRow(i);
                     } catch (SQLException | ClassNotFoundException e1) {
                         JOptionPane.showMessageDialog(frame, e1.getMessage());
