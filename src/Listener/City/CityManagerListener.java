@@ -33,6 +33,7 @@ public class CityManagerListener implements ActionListener {
         frame.setSize(600, 500);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frame.setResizable(false);
 
         // Panels
         JPanel newCityPanel = new JPanel();
@@ -43,6 +44,7 @@ public class CityManagerListener implements ActionListener {
 
         JPanel actionPanel = new JPanel();
         actionPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
 
         // HEADER panel
         DefaultComboBoxModel<String> countryModelList = new DefaultComboBoxModel<>();
@@ -66,6 +68,7 @@ public class CityManagerListener implements ActionListener {
         addCityBtn.addActionListener(new AddCityListener(frame, countryList, cityNameInput, tableCityModel));
         newCityPanel.add(addCityBtn);
 
+
         // List all the cities
         JTable citiesTable = new JTable(tableCityModel);
         citiesTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -82,7 +85,10 @@ public class CityManagerListener implements ActionListener {
         } catch (ClassNotFoundException | SQLException e1) {
             JOptionPane.showMessageDialog(frame, e1.getMessage());
         }
-        citiesPanel.add(citiesTable);
+        JScrollPane citiesScrollTable = new JScrollPane(citiesTable);
+        citiesScrollTable.setPreferredSize(new Dimension(400, 350));
+        citiesPanel.add(citiesScrollTable);
+
 
         // ACTION panel
         JButton delBtn = new JButton("Supprimer");

@@ -38,35 +38,16 @@ public class CategoryManagerListener implements ActionListener
         JPanel actionPanel = new JPanel();
         actionPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
+
         // HEADER panel
         newCategoryPanel.add(new JLabel("Nom de la catégorie"));
         JTextField catNameInput = new JTextField(15);
         newCategoryPanel.add(catNameInput);
+
         JButton addCatBtn = new JButton("Ajouter");
-        addCatBtn.addActionListener(new ActionListener() {
-            @Override
-            // Insert the new category in the database and update the GUI
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Category newCat = new Category(catNameInput.getText());
-
-                    Category cat = new CategoryRepository().insertCategory(newCat);
-
-                    // Update the GUI
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            listCatModel.addElement(cat.getName());
-                            catNameInput.setText(null);
-                            catNameInput.requestFocusInWindow();
-                        }
-                    });
-                } catch (ClassNotFoundException | SQLException e1) {
-                    JOptionPane.showMessageDialog(null, e1.getMessage());
-                }
-            }
-        });
+        addCatBtn.addActionListener(new AddCategoryListener(frame,catNameInput, listCatModel));
         newCategoryPanel.add(addCatBtn);
+
 
         // List all the categories in a JList
         try {
@@ -78,38 +59,22 @@ public class CategoryManagerListener implements ActionListener
             JOptionPane.showMessageDialog(frame, e1.getMessage());
             frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
         }
-        JList catList = new JList(listCatModel);
+        JList<String> catList = new JList<>(listCatModel);
         catList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         catList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         catList.setVisibleRowCount(-1);
-        // Add a scrollbar to the list
-        JScrollPane listScroller = new JScrollPane(catList);
-        listScroller.setPreferredSize(new Dimension(300, 200));
-        categoriesPanel.add(listScroller);
+        categoriesPanel.add(catList);
+
 
         // ACTION panel
         JButton delCatBtn = new JButton("Supprimer");
-        delCatBtn.addActionListener(new ActionListener() {
-            @Override
-            // TODO: multiple delete
-            public void actionPerformed(ActionEvent e) {
-                for (Integer i :
-                        catList.getSelectedIndices()) {
-                    String catName = (String) listCatModel.getElementAt(i);
-                    try {
-                        new CategoryRepository().deleteCategoryByName(catName);
-                        listCatModel.remove(i);
-                    } catch (SQLException | ClassNotFoundException e1) {
-                        JOptionPane.showMessageDialog(null, e1.getMessage());
-                    }
-                }
-            }
-        });
+        delCatBtn.addActionListener(new DeleteCategoryListener(frame, listCatModel, catList));
         actionPanel.add(delCatBtn);
 
         JButton closeBt = new JButton("Fermer la fenêtre");
         closeBt.addActionListener(new CloseFrameListener(frame));
         actionPanel.add(closeBt);
+
 
         // Layout of the frame
         frame.add(newCategoryPanel, BorderLayout.NORTH);
