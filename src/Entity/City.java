@@ -2,7 +2,6 @@ package Entity;
 
 import java.util.ArrayList;
 
-// TODO: Créer une méthode toString
 public class City
 {
     private int id;
@@ -62,5 +61,15 @@ public class City
 
     public void setCountry(Country country) {
         this.country = country;
+    }
+
+    @Override
+    public String toString() {
+        return "City{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", country=" + country +
+                ", activityList=" + activityList +
+                '}';
     }
 }

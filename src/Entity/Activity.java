@@ -1,6 +1,5 @@
 package Entity;
 
-// TODO: Créer une méthode toString
 public class Activity
 {
     private int id;
@@ -85,5 +84,18 @@ public class Activity
 
     public void setCity(City city) {
         this.city = city;
+    }
+
+    @Override
+    public String toString() {
+        return "Activity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", time=" + time +
+                ", category=" + category +
+                ", rating=" + rating +
+                ", city=" + city +
+                '}';
     }
 }

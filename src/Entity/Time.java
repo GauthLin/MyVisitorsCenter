@@ -34,7 +34,11 @@ public class Time
         return  this.minutes * 60 + this.hours * 3600;
     }
 
+    @Override
     public String toString() {
-        return String.format("Heures %d, Minutes %d", this.hours, this.minutes);
+        return "Time{" +
+                "minutes=" + minutes +
+                ", hours=" + hours +
+                '}';
     }
 }
