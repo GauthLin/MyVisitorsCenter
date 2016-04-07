@@ -1,6 +1,7 @@
 package Repository;
 
 import Entity.City;
+import Entity.Country;
 import Manager.ActivityManager;
 import Manager.DBManager;
 
@@ -25,11 +26,12 @@ public class CityRepository
      * @throws SQLException
      */
     public ArrayList<City> getCities() throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = dbManager.executeQuery("SELECT * FROM city");
+        ResultSet resultSet = dbManager.executeQuery("SELECT * FROM city INNER JOIN country ON country.id = city.country_id");
         ArrayList<City> cities = new ArrayList<>();
 
         while (resultSet.next()) {
-            cities.add(new City(resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3)));
+            Country country = new Country(resultSet.getInt(4), resultSet.getString(5));
+            cities.add(new City(resultSet.getInt(1), resultSet.getString(2), country));
         }
 
         return cities;
@@ -45,9 +47,9 @@ public class CityRepository
      * TODO: Get the last insert id
      */
     public City insertCity(City city) throws SQLException, ClassNotFoundException {
-        dbManager.executeUpdate("INSERT INTO city(name, country_id) VALUES ('"+ city.getName() +"', "+ city.getCountryId() +")");
+        dbManager.executeUpdate("INSERT INTO city(name, country_id) VALUES ('"+ city.getName() +"', "+ city.getCountry().getId() +")");
 
-        City newCity = new City(city.getName(), city.getCountryId());
+        City newCity = new City(city.getName(), city.getCountry());
 
         return newCity;
     }
@@ -60,8 +62,9 @@ public class CityRepository
      * @throws SQLException
      */
     public City getCityByName(String name) throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = dbManager.executeQuery("SELECT * FROM city WHERE name='"+ name +"'");
-        City city = new City(resultSet.getInt(1), name, resultSet.getInt(3));
+        ResultSet resultSet = dbManager.executeQuery("SELECT * FROM city INNER JOIN country ON country.id = city.country_id WHERE name='"+ name +"'");
+        Country country = new Country(resultSet.getInt(4), resultSet.getString(5));
+        City city = new City(resultSet.getInt(1), name, country);
 
         ResultSet resultSet1 = dbManager.executeQuery("SELECT * FROM activity INNER JOIN category ON category.id = activity.category_id WHERE city_id='"+ city.getId() +"'");
         while (resultSet1.next()) {

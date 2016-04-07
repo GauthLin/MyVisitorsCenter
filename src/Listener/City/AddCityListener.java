@@ -40,7 +40,7 @@ public class AddCityListener implements ActionListener
             // If at least one country is selected
             // TODO: java.sql.SQLException: database is locked
             Country country = new CountryRepository().getCountryByName(String.valueOf(countryList.getSelectedItem()));
-            City newCity = new City(cityNameInput.getText(), country.getId());
+            City newCity = new City(cityNameInput.getText(), country);
 
             new CityRepository().insertCity(newCity);
 
@@ -49,7 +49,7 @@ public class AddCityListener implements ActionListener
                 @Override
                 public void run() {
                     Vector<String> vec = new Vector<>();
-                    vec.add(String.valueOf(newCity.getCountryId()));
+                    vec.add(String.valueOf(newCity.getCountry().getId()));
                     vec.add(newCity.getName());
                     tableCityModel.addRow(vec);
                     cityNameInput.setText(null);

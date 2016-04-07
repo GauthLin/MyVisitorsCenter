@@ -78,7 +78,7 @@ public class CityManagerListener implements ActionListener {
             for (City city :
                     new CityRepository().getCities()) {
                 Vector<String> vector = new Vector<>();
-                vector.add(String.valueOf(city.getCountryId()));
+                vector.add(city.getCountry().getName());
                 vector.add(city.getName());
                 tableCityModel.addRow(vector);
             }

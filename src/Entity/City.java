@@ -7,18 +7,18 @@ public class City
 {
     private int id;
     private String name;
-    private int country_id;
+    private Country country;
     private final ArrayList<Activity> activityList = new ArrayList<>();
 
-    public City(String name, int country_id) {
+    public City(String name, Country country) {
         this.name = name.toUpperCase();
-        this.country_id = country_id;
+        this.country = country;
     }
 
-    public City(int id, String name, int country_id) {
+    public City(int id, String name, Country country) {
         this.id = id;
         this.name = name;
-        this.country_id = country_id;
+        this.country = country;
     }
 
     public City(int id, String name) {
@@ -56,11 +56,11 @@ public class City
         this.id = id;
     }
 
-    public int getCountryId() {
-        return country_id;
+    public Country getCountry() {
+        return country;
     }
 
-    public void setCountryId(int country_id) {
-        this.country_id = country_id;
+    public void setCountry(Country country) {
+        this.country = country;
     }
 }

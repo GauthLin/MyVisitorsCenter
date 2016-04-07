@@ -31,8 +31,8 @@ public class DeleteCityListener implements ActionListener
             try {
                 CityRepository cityRepository = new CityRepository();
 
-                City city = cityRepository.getCityByName(String.valueOf(tableCityModel.getValueAt(i, 1)));
-                cityRepository.deleteCity(city);
+//                City city = cityRepository.getCityByName(String.valueOf(tableCityModel.getValueAt(i, 1)));
+//                cityRepository.deleteCity(city);
                 tableCityModel.removeRow(i);
             } catch (SQLException | ClassNotFoundException e1) {
                 JOptionPane.showMessageDialog(frame, e1.getMessage());
