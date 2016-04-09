@@ -4,6 +4,7 @@ import Entity.Country;
 import Manager.CountryManager;
 import Manager.DBManager;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -23,11 +24,14 @@ public class CountryRepository
      * @param country The country to add
      * @return A country with his id
      * @throws SQLException
-     *
-     * TODO: get the last id
      */
     public Country insertCountry(Country country) throws SQLException, ClassNotFoundException {
         dbManager.executeUpdate("INSERT INTO country(name) VALUES ('"+ country.getName() +"')");
+
+        ResultSet generatedKey = dbManager.getStatement().getGeneratedKeys();
+        if (generatedKey.next()) {
+            country.setId(generatedKey.getInt(1));
+        }
 
         return country;
     }
@@ -55,6 +59,9 @@ public class CountryRepository
         while (resultSet.next()) {
             countries.add(countryManager.convertResultSet2Country(resultSet));
         }
+
+        dbManager.closeCurrentStatement();
+
         return countries;
     }
 
@@ -68,6 +75,10 @@ public class CountryRepository
     public Country getCountryByName(String name) throws SQLException, ClassNotFoundException {
         ResultSet resultSet = dbManager.executeQuery("SELECT * FROM country WHERE name='"+ name +"'");
 
-        return countryManager.convertResultSet2Country(resultSet);
+        Country country = countryManager.convertResultSet2Country(resultSet);
+
+        dbManager.closeCurrentStatement();
+
+        return country;
     }
 }

@@ -34,6 +34,8 @@ public class CityRepository
             cities.add(new City(resultSet.getInt(1), resultSet.getString(2), country));
         }
 
+        dbManager.closeCurrentStatement();
+
         return cities;
     }
 
@@ -43,15 +45,16 @@ public class CityRepository
      * @param city The new city to insert
      * @return The city with his id
      * @throws SQLException
-     *
-     * TODO: Get the last insert id
      */
     public City insertCity(City city) throws SQLException, ClassNotFoundException {
         dbManager.executeUpdate("INSERT INTO city(name, country_id) VALUES ('"+ city.getName() +"', "+ city.getCountry().getId() +")");
 
-        City newCity = new City(city.getName(), city.getCountry());
+        ResultSet generatedKeys = dbManager.getStatement().getGeneratedKeys();
+        if (generatedKeys.next()) {
+            city.setId(generatedKeys.getInt(1));
+        }
 
-        return newCity;
+        return city;
     }
 
     /**
@@ -62,7 +65,7 @@ public class CityRepository
      * @throws SQLException
      */
     public City getCityByName(String name) throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = dbManager.executeQuery("SELECT * FROM city INNER JOIN country ON country.id = city.country_id WHERE name='"+ name +"'");
+        ResultSet resultSet = dbManager.executeQuery("SELECT * FROM city INNER JOIN country ON country.id = city.country_id WHERE city.name='"+ name +"'");
         Country country = new Country(resultSet.getInt(4), resultSet.getString(5));
         City city = new City(resultSet.getInt(1), name, country);
 
@@ -70,6 +73,8 @@ public class CityRepository
         while (resultSet1.next()) {
             city.addActivity(activityManager.convertResultSet2Activity(resultSet1, city));
         }
+
+        dbManager.closeCurrentStatement();
 
         return city;
     }

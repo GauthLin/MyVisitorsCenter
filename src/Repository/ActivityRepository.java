@@ -28,8 +28,15 @@ public class ActivityRepository
      * @param activity The activity to add
      * @throws SQLException
      */
-    public void insertActivity(Activity activity) throws SQLException, ClassNotFoundException {
+    public Activity insertActivity(Activity activity) throws SQLException, ClassNotFoundException {
         dbManager.executeUpdate("INSERT INTO activity(name, description, hours, minutes, category_id, rating, city_id) VALUES ('"+ activity.getName() +"', '"+ activity.getDescription() +"', "+ activity.getTime().getHours() +", "+ activity.getTime().getMinutes() +", '"+ activity.getCategory().getId() +"', "+ activity.getRating() +", "+ activity.getCity().getId() +")");
+
+        ResultSet generatedKeys = dbManager.getStatement().getGeneratedKeys();
+        if (generatedKeys.next()) {
+            activity.setID(generatedKeys.getInt(1));
+        }
+
+        return activity;
     }
 
     /**
@@ -46,6 +53,8 @@ public class ActivityRepository
         while (resultSet.next()) {
             activities.add(activityManager.convertResultSet2Activity(resultSet, city));
         }
+
+        dbManager.closeCurrentStatement();
 
         return activities;
     }

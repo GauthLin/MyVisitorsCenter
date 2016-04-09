@@ -26,17 +26,20 @@ public class DeleteCityListener implements ActionListener
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        for (Integer i :
-                citiesTable.getSelectedRows()) {
-            try {
-                CityRepository cityRepository = new CityRepository();
-
-//                City city = cityRepository.getCityByName(String.valueOf(tableCityModel.getValueAt(i, 1)));
-//                cityRepository.deleteCity(city);
-                tableCityModel.removeRow(i);
-            } catch (SQLException | ClassNotFoundException e1) {
-                JOptionPane.showMessageDialog(frame, e1.getMessage());
+        try {
+            CityRepository cityRepository = new CityRepository();
+            for (Integer i :
+                    citiesTable.getSelectedRows()) {
+                try {
+                    City city = cityRepository.getCityByName(String.valueOf(tableCityModel.getValueAt(i, 1)));
+                    cityRepository.deleteCity(city);
+                    tableCityModel.removeRow(i);
+                } catch (SQLException | ClassNotFoundException e1) {
+                    JOptionPane.showMessageDialog(frame, e1.getMessage());
+                }
             }
+        } catch (SQLException | ClassNotFoundException e1) {
+            JOptionPane.showMessageDialog(frame, e1.getMessage());
         }
     }
 }

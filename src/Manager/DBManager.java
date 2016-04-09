@@ -4,10 +4,13 @@ import java.sql.*;
 
 /**
  * The database manager class
+ *
+ * TODO: Foreign Key doesn't work
  */
 public class DBManager
 {
     private Connection connection;
+    private Statement statement;
 
     public DBManager() throws SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
@@ -15,11 +18,21 @@ public class DBManager
     }
 
     public ResultSet executeQuery(String sql) throws SQLException, ClassNotFoundException {
-        return connection.createStatement().executeQuery(sql);
+        statement = connection.createStatement();
+        return statement.executeQuery(sql);
     }
 
     public void executeUpdate(String sql) throws SQLException, ClassNotFoundException {
-        connection.createStatement().executeUpdate(sql);
+        statement = connection.createStatement();
+        statement.executeUpdate(sql);
+    }
+
+    public void closeCurrentStatement() throws SQLException {
+        statement.close();
+    }
+
+    public Statement getStatement() {
+        return statement;
     }
 
     /**

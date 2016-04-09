@@ -20,11 +20,14 @@ public class CategoryRepository
      * @param category The category to add
      * @return Category
      * @throws SQLException
-     *
-     * TODO Get the last insert id
      */
     public Category insertCategory(Category category) throws SQLException, ClassNotFoundException {
         dbManager.executeUpdate("INSERT INTO category(name) VALUES ('"+ category.getName() +"')");
+
+        ResultSet generatedKeys = dbManager.getStatement().getGeneratedKeys();
+        if (generatedKeys.next()) {
+            category.setId(generatedKeys.getInt(1));
+        }
 
         return category;
     }
@@ -53,6 +56,8 @@ public class CategoryRepository
         while (resultSet.next()) {
             categories.add(new Category(resultSet.getInt(1), resultSet.getString(2)));
         }
+
+        dbManager.closeCurrentStatement();
 
         return categories;
     }
