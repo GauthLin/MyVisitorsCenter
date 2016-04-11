@@ -1,4 +1,5 @@
 import Entity.*;
+import Listener.Activity.ActivityManagerListener;
 import Listener.Category.CategoryManagerListener;
 import Listener.City.CityManagerListener;
 import Listener.Country.CountryManagerListener;
@@ -24,11 +25,11 @@ public class Main {
                 countryRepository.getCountries()) {
             countryNameList.addElement(country.getName());
         }
-        JComboBox countryList = new JComboBox(countryNameList);
+        JComboBox<String> countryList = new JComboBox<>(countryNameList);
 
         DefaultComboBoxModel<String> cityNameList = new DefaultComboBoxModel<>();
         cityNameList.addElement("-- Choisissez un pays svp --");
-        JComboBox cityList = new JComboBox(cityNameList);
+        JComboBox<String> cityList = new JComboBox<>(cityNameList);
         cityList.setEnabled(false);
 
         JLabel labelNbJours = new JLabel("Nombre de jours");
@@ -68,6 +69,7 @@ public class Main {
         adminPanel.add(cityManagerBtn);
 
         JButton activityManagerBtn = new JButton("Gestion des activités");
+        activityManagerBtn.addActionListener(new ActivityManagerListener());
         adminPanel.add(activityManagerBtn);
 
         JButton categoryManagerBtn = new JButton("Gestion des catégories");

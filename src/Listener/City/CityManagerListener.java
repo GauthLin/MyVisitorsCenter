@@ -23,11 +23,6 @@ import java.util.Vector;
 public class CityManagerListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-        // The list for the categories
-        DefaultTableModel tableCityModel = new DefaultTableModel();
-        tableCityModel.addColumn("Pays");
-        tableCityModel.addColumn("Ville");
-
         // Window creation
         JFrame frame = new JFrame("Administration des villes");
         frame.setSize(600, 500);
@@ -65,6 +60,10 @@ public class CityManagerListener implements ActionListener {
         newCityPanel.add(cityNameInput);
 
         JButton addCityBtn = new JButton("Ajouter");
+        // The list for the categories
+        DefaultTableModel tableCityModel = new DefaultTableModel();
+        tableCityModel.addColumn("Pays");
+        tableCityModel.addColumn("Ville");
         addCityBtn.addActionListener(new AddCityListener(frame, countryList, cityNameInput, tableCityModel));
         newCityPanel.add(addCityBtn);
 
