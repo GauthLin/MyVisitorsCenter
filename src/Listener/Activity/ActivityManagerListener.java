@@ -68,12 +68,12 @@ public class ActivityManagerListener implements ActionListener
         firstLine.add(activityName);
 
         // Second line of the new activity panel
-        JPanel secondLine = new JPanel();
-        secondLine.setLayout(new BoxLayout(secondLine, BoxLayout.LINE_AXIS));
+        JPanel secondLine = new JPanel(new FlowLayout(FlowLayout.LEFT));
         newActivityPanel.add(secondLine);
 
         // Activity description
-        JTextArea activityDescription = new JTextArea(5, 20);
+        JTextArea activityDescription = new JTextArea(7, 40);
+        activityDescription.setToolTipText("Description de l'activité");
         secondLine.add(activityDescription);
 
         // More info panel over the new activity
@@ -91,15 +91,18 @@ public class ActivityManagerListener implements ActionListener
         formatter.setAllowsInvalid(false);
         formatter.setOverwriteMode(true);
         activityDuration.setEditor(editor);
+        activityDuration.setToolTipText("Durée de l'activité");
         moreInfoPanel.add(activityDuration);
 
         // Rating
         SpinnerNumberModel numberModel = new SpinnerNumberModel(0, 0, 5, 1);
         JSpinner activityRating = new JSpinner(numberModel);
+        activityRating.setToolTipText("Cotation de l'activité");
         moreInfoPanel.add(activityRating);
 
         // Add button
         JButton addActivityBtn = new JButton("Ajouter");
+        addActivityBtn.addActionListener(new AddActivityListener());
         moreInfoPanel.add(addActivityBtn);
 
         frame.add(newActivityPanel, BorderLayout.NORTH);
