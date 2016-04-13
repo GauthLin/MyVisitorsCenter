@@ -1,5 +1,7 @@
 package Manager;
 
+import org.sqlite.SQLiteConfig;
+
 import java.sql.*;
 
 /**
@@ -14,7 +16,9 @@ public class DBManager
 
     public DBManager() throws SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
-        connection = DriverManager.getConnection("jdbc:sqlite:myvisitorscenter.sqlite");
+        SQLiteConfig sqLiteConfig = new SQLiteConfig();
+        sqLiteConfig.enforceForeignKeys(true);
+        connection = DriverManager.getConnection("jdbc:sqlite:myvisitorscenter.sqlite", sqLiteConfig.toProperties());
     }
 
     public ResultSet executeQuery(String sql) throws SQLException, ClassNotFoundException {
