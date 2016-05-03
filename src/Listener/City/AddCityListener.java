@@ -23,6 +23,7 @@ public class AddCityListener implements ActionListener
     private final DefaultTableModel tableCityModel;
 
     public AddCityListener(JFrame frame, JComboBox<String> countryList, JTextField cityNameInput, DefaultTableModel tableCityModel) {
+        super();
         this.frame = frame;
         this.countryList = countryList;
         this.cityNameInput = cityNameInput;

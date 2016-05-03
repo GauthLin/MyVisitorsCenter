@@ -41,6 +41,10 @@ public class Country
         this.cities.add(city);
     }
 
+    public ArrayList<City> getCities() {
+        return cities;
+    }
+
     @Override
     public String toString() {
         return "Country{" +

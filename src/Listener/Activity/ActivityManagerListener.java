@@ -25,7 +25,7 @@ public class ActivityManagerListener implements ActionListener
 
         // Panels
         JPanel newActivityPanel = new JPanel();
-        newActivityPanel.setLayout(new FlowLayout());
+        newActivityPanel.setLayout(new BorderLayout());
 
         JPanel activitiesPanel = new JPanel();
         activitiesPanel.setLayout(new FlowLayout());
@@ -38,7 +38,7 @@ public class ActivityManagerListener implements ActionListener
         // First line of the new activity panel
         JPanel firstLine = new JPanel();
         firstLine.setLayout(new BoxLayout(firstLine, BoxLayout.X_AXIS));
-        newActivityPanel.add(firstLine);
+        newActivityPanel.add(firstLine, BorderLayout.NORTH);
 
         // List of countries
         DefaultComboBoxModel<String> countryNameList = new DefaultComboBoxModel<>();
@@ -59,8 +59,10 @@ public class ActivityManagerListener implements ActionListener
         DefaultComboBoxModel<String> cityNameList = new DefaultComboBoxModel<>();
         cityNameList.addElement("-- Veuillez choisir un pays --");
         JComboBox<String> cityList = new JComboBox<>(cityNameList);
-        cityList.setEnabled(false);
         firstLine.add(cityList);
+
+        // Mise à jour des villes en fonction du pays choisi
+        countryList.addActionListener(new ChangeCountryListener(countryList, cityNameList));
 
         // Activity name
         JTextField activityName = new JTextField(20);
@@ -68,18 +70,20 @@ public class ActivityManagerListener implements ActionListener
         firstLine.add(activityName);
 
         // Second line of the new activity panel
-        JPanel secondLine = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        newActivityPanel.add(secondLine);
+        JPanel secondLine = new JPanel(new BorderLayout());
+        newActivityPanel.add(secondLine, BorderLayout.CENTER);
 
         // Activity description
-        JTextArea activityDescription = new JTextArea(7, 40);
+        JTextArea activityDescription = new JTextArea();
+        activityDescription.setPreferredSize(new Dimension(400, 100));
         activityDescription.setToolTipText("Description de l'activité");
-        secondLine.add(activityDescription);
+        JScrollPane activityDescriptionScroll = new JScrollPane(activityDescription);
+        secondLine.add(activityDescriptionScroll, BorderLayout.CENTER);
 
         // More info panel over the new activity
         JPanel moreInfoPanel = new JPanel();
         moreInfoPanel.setLayout(new BoxLayout(moreInfoPanel, BoxLayout.Y_AXIS));
-        secondLine.add(moreInfoPanel);
+        secondLine.add(moreInfoPanel, BorderLayout.EAST);
 
         // Duration
         SpinnerDateModel spinnerModel = new SpinnerDateModel();
@@ -106,6 +110,7 @@ public class ActivityManagerListener implements ActionListener
         moreInfoPanel.add(addActivityBtn);
 
         frame.add(newActivityPanel, BorderLayout.NORTH);
+        frame.add(activitiesPanel, BorderLayout.CENTER);
         frame.setVisible(true);
     }
 }

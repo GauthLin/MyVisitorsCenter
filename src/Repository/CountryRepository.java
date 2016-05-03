@@ -1,5 +1,6 @@
 package Repository;
 
+import Entity.City;
 import Entity.Country;
 import Manager.CountryManager;
 import Manager.DBManager;
@@ -76,9 +77,15 @@ public class CountryRepository
         ResultSet resultSet = dbManager.executeQuery("SELECT * FROM country WHERE name='"+ name +"'");
 
         Country country = countryManager.convertResultSet2Country(resultSet);
-
         dbManager.closeCurrentStatement();
 
+        ResultSet resultSet1 = dbManager.executeQuery("SELECT * FROM city WHERE country_id="+ country.getId());
+        while (resultSet1.next()) {
+            country.addCity(new City(resultSet1.getInt(1), resultSet1.getString(2)));
+        }
+        dbManager.closeCurrentStatement();
+
+        System.out.println(country.toString());
         return country;
     }
 }
