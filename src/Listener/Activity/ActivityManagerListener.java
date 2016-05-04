@@ -1,6 +1,8 @@
 package Listener.Activity;
 
+import Entity.Category;
 import Entity.Country;
+import Repository.CategoryRepository;
 import Repository.CountryRepository;
 
 import javax.swing.*;
@@ -75,7 +77,7 @@ public class ActivityManagerListener implements ActionListener
 
         // Activity description
         JTextArea activityDescription = new JTextArea();
-        activityDescription.setPreferredSize(new Dimension(400, 100));
+        activityDescription.setPreferredSize(new Dimension(300, 100));
         activityDescription.setToolTipText("Description de l'activité");
         JScrollPane activityDescriptionScroll = new JScrollPane(activityDescription);
         secondLine.add(activityDescriptionScroll, BorderLayout.CENTER);
@@ -84,6 +86,21 @@ public class ActivityManagerListener implements ActionListener
         JPanel moreInfoPanel = new JPanel();
         moreInfoPanel.setLayout(new BoxLayout(moreInfoPanel, BoxLayout.Y_AXIS));
         secondLine.add(moreInfoPanel, BorderLayout.EAST);
+
+        // List of categories
+        DefaultComboBoxModel<String> categoryNameList = new DefaultComboBoxModel<>();
+        categoryNameList.addElement("-- Sélectionnez une categorie --");
+        try {
+            CategoryRepository categoryRepository = new CategoryRepository();
+            for (Category category :
+                    categoryRepository.getCategories()) {
+                categoryNameList.addElement(category.getName());
+            }
+        } catch (ClassNotFoundException | SQLException e1) {
+            e1.printStackTrace();
+        }
+        JComboBox<String> categoryList = new JComboBox<>(categoryNameList);
+        moreInfoPanel.add(categoryList);
 
         // Duration
         SpinnerDateModel spinnerModel = new SpinnerDateModel();
