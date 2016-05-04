@@ -54,6 +54,8 @@ public class CityRepository
             city.setId(generatedKeys.getInt(1));
         }
 
+        dbManager.closeCurrentStatement();
+
         return city;
     }
 
