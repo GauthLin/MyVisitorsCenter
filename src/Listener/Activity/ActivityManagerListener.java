@@ -3,6 +3,7 @@ package Listener.Activity;
 import Entity.Activity;
 import Entity.Category;
 import Entity.Country;
+import Listener.ChangeCountryListener;
 import Listener.CloseFrameListener;
 import Repository.ActivityRepository;
 import Repository.CategoryRepository;
@@ -120,6 +121,7 @@ public class ActivityManagerListener implements ActionListener
          * The list for the categories
          */
         DefaultTableModel tableActivityModel = new DefaultTableModel();
+        tableActivityModel.addColumn("#");
         tableActivityModel.addColumn("Pays");
         tableActivityModel.addColumn("Ville");
         tableActivityModel.addColumn("Nom");
@@ -142,6 +144,7 @@ public class ActivityManagerListener implements ActionListener
                     new ActivityRepository().getActivities()) {
                 Vector<String> vector = new Vector<>();
 
+                vector.add(String.valueOf(activity.getId()));
                 vector.add(activity.getCity().getCountry().getName());
                 vector.add(activity.getCity().getName());
                 vector.add(activity.getName());
@@ -163,7 +166,7 @@ public class ActivityManagerListener implements ActionListener
          * ACTION PANEL
          */
         JButton delActivityBtn = new JButton("Supprimer");
-        //delActivityBtn.addActionListener();
+        delActivityBtn.addActionListener(new DeleteActivityListener(frame, activitiesTable));
         actionPanel.add(delActivityBtn);
 
         JButton closeBtn = new JButton("Fermer la fenêtre");

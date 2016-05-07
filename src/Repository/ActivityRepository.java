@@ -43,6 +43,18 @@ public class ActivityRepository
     }
 
     /**
+     * Deletes the activity by his id
+     * @param id The id of the activity to delete
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public void deleteActivityById(String id) throws SQLException, ClassNotFoundException {
+        dbManager.connect();
+        dbManager.executeUpdate("DELETE FROM activity WHERE id="+ id);
+        dbManager.disconnect();
+    }
+
+    /**
      * Get a list of activities bound to the city
      *
      * @param city The city to search into
@@ -77,12 +89,16 @@ public class ActivityRepository
                         "INNER JOIN category ON category.id = activity.category_id " +
                         "INNER JOIN city ON city.id = activity.city_id " +
                         "INNER JOIN country ON country.id = city.country_id " +
-                        "ORDER BY activity.name ASC"
+                        "ORDER BY activity.id ASC"
         );
         ArrayList<Activity> activities = new ArrayList<>();
 
         while (resultSet.next()) {
-            City city = new City(resultSet.getInt("city_id"), resultSet.getString("city_name"), new Country(resultSet.getInt("country_id"), resultSet.getString("country_name")));
+            City city = new City(
+                    resultSet.getInt("city_id"),
+                    resultSet.getString("city_name"),
+                    new Country(resultSet.getInt("country_id"), resultSet.getString("country_name"))
+            );
             activities.add(activityManager.convertResultSet2Activity(resultSet, city));
         }
 

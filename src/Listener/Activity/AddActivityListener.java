@@ -58,19 +58,20 @@ public class AddActivityListener implements ActionListener
                     city
                 );
 
-            new ActivityRepository().insertActivity(activity);
+            Activity newActivity = new ActivityRepository().insertActivity(activity);
 
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
                     Vector<String> vec = new Vector<>();
 
+                    vec.add(String.valueOf(newActivity.getId()));
                     vec.add(city.getCountry().getName());
                     vec.add(city.getName());
-                    vec.add(activity.getName());
-                    vec.add(activity.getDescription());
-                    vec.add(String.valueOf(activity.getTime().getTotalMinutes()));
-                    vec.add(String.valueOf(activity.getRating()));
+                    vec.add(newActivity.getName());
+                    vec.add(newActivity.getDescription());
+                    vec.add(String.valueOf(newActivity.getTime().getTotalMinutes()));
+                    vec.add(String.valueOf(newActivity.getRating()));
                     tableActivityModel.addRow(vec);
 
                     // Vide tous les champs
@@ -83,7 +84,7 @@ public class AddActivityListener implements ActionListener
                 }
             });
         } catch (SQLException | ClassNotFoundException e1) {
-            e1.printStackTrace();
+            JOptionPane.showMessageDialog(frame, e1.getMessage());
         }
     }
 }
