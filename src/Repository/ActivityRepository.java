@@ -9,6 +9,7 @@ import Manager.DBManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -54,6 +55,29 @@ public class ActivityRepository
         dbManager.disconnect();
     }
 
+    public Activity getActivityById(String id) throws SQLException, ClassNotFoundException {
+        dbManager.connect();
+
+        ResultSet resultSet = dbManager.executeQuery(
+                "SELECT * FROM activity " +
+                        "INNER JOIN category ON category.id = activity.category_id " +
+                        "WHERE activity.id="+ id +" " +
+                        "ORDER BY activity.rating DESC"
+        );
+
+        City city = new City(
+                resultSet.getInt("city_id"),
+                resultSet.getString("city_name"),
+                new Country(resultSet.getInt("country_id"), resultSet.getString("country_name"))
+        );
+        Activity activity = activityManager.convertResultSet2Activity(resultSet, city);
+
+        dbManager.closeCurrentStatement();
+        dbManager.disconnect();
+
+        return activity;
+    }
+
     /**
      * Get a list of activities bound to the city
      *
@@ -63,7 +87,13 @@ public class ActivityRepository
      */
     public ArrayList<Activity> getActivitiesByCity(City city) throws SQLException, ClassNotFoundException {
         dbManager.connect();
-        ResultSet resultSet = dbManager.executeQuery("SELECT * FROM activity INNER JOIN category ON category.id = activity.category_id WHERE city_id="+ city.getId() +" ORDER BY activity.name ASC");
+
+        ResultSet resultSet = dbManager.executeQuery(
+                "SELECT * FROM activity " +
+                        "INNER JOIN category ON category.id = activity.category_id " +
+                        "WHERE city_id="+ city.getId() + " " +
+                        "ORDER BY activity.rating DESC"
+        );
         ArrayList<Activity> activities = new ArrayList<>();
 
         while (resultSet.next()) {
