@@ -26,7 +26,9 @@ public class CityRepository
      * @throws SQLException
      */
     public ArrayList<City> getCities() throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = dbManager.executeQuery("SELECT * FROM city INNER JOIN country ON country.id = city.country_id");
+        dbManager.connect();
+
+        ResultSet resultSet = dbManager.executeQuery("SELECT * FROM city INNER JOIN country ON country.id = city.country_id ORDER BY country.name ASC");
         ArrayList<City> cities = new ArrayList<>();
 
         while (resultSet.next()) {
@@ -35,7 +37,7 @@ public class CityRepository
         }
 
         dbManager.closeCurrentStatement();
-
+        dbManager.disconnect();
         return cities;
     }
 
@@ -47,6 +49,7 @@ public class CityRepository
      * @throws SQLException
      */
     public City insertCity(City city) throws SQLException, ClassNotFoundException {
+        dbManager.connect();
         dbManager.executeUpdate("INSERT INTO city(name, country_id) VALUES ('"+ city.getName() +"', "+ city.getCountry().getId() +")");
 
         ResultSet generatedKeys = dbManager.getStatement().getGeneratedKeys();
@@ -56,6 +59,7 @@ public class CityRepository
 
         dbManager.closeCurrentStatement();
 
+        dbManager.disconnect();
         return city;
     }
 
@@ -67,6 +71,7 @@ public class CityRepository
      * @throws SQLException
      */
     public City getCityByName(String name) throws SQLException, ClassNotFoundException {
+        dbManager.connect();
         ResultSet resultSet = dbManager.executeQuery("SELECT * FROM city INNER JOIN country ON country.id = city.country_id WHERE city.name='"+ name +"'");
         Country country = new Country(resultSet.getInt(4), resultSet.getString(5));
         City city = new City(resultSet.getInt(1), name, country);
@@ -78,6 +83,7 @@ public class CityRepository
 
         dbManager.closeCurrentStatement();
 
+        dbManager.disconnect();
         return city;
     }
 
@@ -88,6 +94,8 @@ public class CityRepository
      * @throws SQLException
      */
     public void deleteCity(City city) throws SQLException, ClassNotFoundException {
+        dbManager.connect();
         dbManager.executeUpdate("DELETE FROM city WHERE id="+ city.getId());
+        dbManager.disconnect();
     }
 }

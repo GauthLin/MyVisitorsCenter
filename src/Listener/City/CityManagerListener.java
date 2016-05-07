@@ -60,7 +60,11 @@ public class CityManagerListener implements ActionListener {
         newCityPanel.add(cityNameInput);
 
         JButton addCityBtn = new JButton("Ajouter");
-        // The list for the categories
+
+
+        /*
+         * The list for the categories
+         */
         DefaultTableModel tableCityModel = new DefaultTableModel();
         tableCityModel.addColumn("Pays");
         tableCityModel.addColumn("Ville");

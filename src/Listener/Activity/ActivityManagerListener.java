@@ -1,17 +1,20 @@
 package Listener.Activity;
 
+import Entity.Activity;
 import Entity.Category;
 import Entity.Country;
+import Listener.CloseFrameListener;
+import Repository.ActivityRepository;
 import Repository.CategoryRepository;
 import Repository.CountryRepository;
 
 import javax.swing.*;
-import javax.swing.text.DateFormatter;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.Calendar;
+import java.util.Vector;
 
 public class ActivityManagerListener implements ActionListener
 {
@@ -33,8 +36,7 @@ public class ActivityManagerListener implements ActionListener
         activitiesPanel.setLayout(new FlowLayout());
 
         JPanel actionPanel = new JPanel();
-        actionPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-
+        actionPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
         // NEW ACTIVITY PANEL
         // First line of the new activity panel
@@ -67,7 +69,7 @@ public class ActivityManagerListener implements ActionListener
         countryList.addActionListener(new ChangeCountryListener(countryList, cityNameList));
 
         // Activity name
-        JTextField activityName = new JTextField(20);
+        JTextField activityName = new JTextField();
         activityName.setToolTipText("Nom de la nouvelle activité");
         firstLine.add(activityName);
 
@@ -103,15 +105,7 @@ public class ActivityManagerListener implements ActionListener
         moreInfoPanel.add(categoryList);
 
         // Duration
-        SpinnerDateModel spinnerModel = new SpinnerDateModel();
-        spinnerModel.setValue(Calendar.getInstance().getTime());
-
-        JSpinner activityDuration = new JSpinner(spinnerModel);
-        JSpinner.DateEditor editor = new JSpinner.DateEditor(activityDuration, "HH:mm");
-        DateFormatter formatter = (DateFormatter)editor.getTextField().getFormatter();
-        formatter.setAllowsInvalid(false);
-        formatter.setOverwriteMode(true);
-        activityDuration.setEditor(editor);
+        JTextField activityDuration = new JTextField();
         activityDuration.setToolTipText("Durée de l'activité");
         moreInfoPanel.add(activityDuration);
 
@@ -121,13 +115,64 @@ public class ActivityManagerListener implements ActionListener
         activityRating.setToolTipText("Cotation de l'activité");
         moreInfoPanel.add(activityRating);
 
+
+        /*
+         * The list for the categories
+         */
+        DefaultTableModel tableActivityModel = new DefaultTableModel();
+        tableActivityModel.addColumn("Pays");
+        tableActivityModel.addColumn("Ville");
+        tableActivityModel.addColumn("Nom");
+        tableActivityModel.addColumn("Description");
+        tableActivityModel.addColumn("Durée");
+        tableActivityModel.addColumn("Cotation");
         // Add button
         JButton addActivityBtn = new JButton("Ajouter");
-        addActivityBtn.addActionListener(new AddActivityListener());
+        addActivityBtn.addActionListener(new AddActivityListener(frame, countryList, cityList, activityName, activityDescription, categoryList, activityDuration, activityRating, tableActivityModel));
         moreInfoPanel.add(addActivityBtn);
+
+
+        // List all the cities
+        JTable activitiesTable = new JTable(tableActivityModel);
+        activitiesTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        activitiesTable.setColumnSelectionAllowed(false);
+        try {
+            // Parcours toutes les villes afin de les afficher
+            for (Activity activity :
+                    new ActivityRepository().getActivities()) {
+                Vector<String> vector = new Vector<>();
+
+                vector.add(activity.getCity().getCountry().getName());
+                vector.add(activity.getCity().getName());
+                vector.add(activity.getName());
+                vector.add(activity.getDescription());
+                vector.add(String.valueOf(activity.getTime().getTotalMinutes()));
+                vector.add(String.valueOf(activity.getRating()));
+
+                tableActivityModel.addRow(vector);
+            }
+        } catch (ClassNotFoundException | SQLException e1) {
+            JOptionPane.showMessageDialog(frame, e1.getMessage());
+        }
+        JScrollPane citiesScrollTable = new JScrollPane(activitiesTable);
+        citiesScrollTable.setPreferredSize(new Dimension(500, 300));
+        activitiesPanel.add(citiesScrollTable);
+
+
+        /*
+         * ACTION PANEL
+         */
+        JButton delActivityBtn = new JButton("Supprimer");
+        //delActivityBtn.addActionListener();
+        actionPanel.add(delActivityBtn);
+
+        JButton closeBtn = new JButton("Fermer la fenêtre");
+        closeBtn.addActionListener(new CloseFrameListener(frame));
+        actionPanel.add(closeBtn);
 
         frame.add(newActivityPanel, BorderLayout.NORTH);
         frame.add(activitiesPanel, BorderLayout.CENTER);
+        frame.add(actionPanel, BorderLayout.SOUTH);
         frame.setVisible(true);
     }
 }

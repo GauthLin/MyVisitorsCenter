@@ -27,12 +27,14 @@ public class CountryRepository
      * @throws SQLException
      */
     public Country insertCountry(Country country) throws SQLException, ClassNotFoundException {
+        dbManager.connect();
         dbManager.executeUpdate("INSERT INTO country(name) VALUES ('"+ country.getName() +"')");
 
         ResultSet generatedKey = dbManager.getStatement().getGeneratedKeys();
         if (generatedKey.next()) {
             country.setId(generatedKey.getInt(1));
         }
+        dbManager.disconnect();
 
         return country;
     }
@@ -44,7 +46,9 @@ public class CountryRepository
      * @throws SQLException
      */
     public void deleteCountryByName(String name) throws SQLException, ClassNotFoundException {
+        dbManager.connect();
         dbManager.executeUpdate("DELETE FROM country WHERE name='"+ name +"'");
+        dbManager.disconnect();
     }
 
     /**
@@ -54,6 +58,7 @@ public class CountryRepository
      * @throws SQLException
      */
     public ArrayList<Country> getCountries() throws SQLException, ClassNotFoundException {
+        dbManager.connect();
         ResultSet resultSet = dbManager.executeQuery("SELECT * FROM country ORDER BY name ASC");
 
         ArrayList<Country> countries = new ArrayList<>();
@@ -62,6 +67,7 @@ public class CountryRepository
         }
 
         dbManager.closeCurrentStatement();
+        dbManager.disconnect();
 
         return countries;
     }
@@ -74,6 +80,7 @@ public class CountryRepository
      * @throws SQLException
      */
     public Country getCountryByName(String name) throws SQLException, ClassNotFoundException {
+        dbManager.connect();
         ResultSet resultSet = dbManager.executeQuery("SELECT * FROM country WHERE name='"+ name +"'");
 
         Country country = countryManager.convertResultSet2Country(resultSet);
@@ -85,7 +92,7 @@ public class CountryRepository
         }
         dbManager.closeCurrentStatement();
 
-        System.out.println(country.toString());
+        dbManager.disconnect();
         return country;
     }
 }
