@@ -22,15 +22,15 @@ public class ActivityManager
      */
     public Activity convertResultSet2Activity(ResultSet resultSet, City city) throws SQLException {
         Activity activity = new Activity(
-                resultSet.getString(2),
-                resultSet.getString(3),
-                resultSet.getInt(4),
-                resultSet.getInt(5),
-                new Category(resultSet.getInt(8), resultSet.getString(9)),
-                resultSet.getInt(7),
+                resultSet.getString("act_name"),
+                resultSet.getString("act_desc"),
+                resultSet.getInt("act_hours"),
+                resultSet.getInt("act_min"),
+                new Category(resultSet.getInt("cat_id"), resultSet.getString("cat_name")),
+                resultSet.getInt("act_rating"),
                 city
         );
-        activity.setID(resultSet.getInt(1));
+        activity.setID(resultSet.getInt("act_id"));
 
         return activity;
     }

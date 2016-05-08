@@ -76,7 +76,13 @@ public class CityRepository
         Country country = new Country(resultSet.getInt(4), resultSet.getString(5));
         City city = new City(resultSet.getInt(1), name, country);
 
-        ResultSet resultSet1 = dbManager.executeQuery("SELECT * FROM activity INNER JOIN category ON category.id = activity.category_id WHERE city_id='"+ city.getId() +"'");
+        ResultSet resultSet1 = dbManager.executeQuery(
+                "SELECT a.name as act_name, a.id as act_id, a.description as act_desc, a.hours as act_hours, a.minutes as act_min, a.rating as act_rating, ci.name as city_name, co.name as country_name, cat.name as cat_name, cat.id as cat_id " +
+                        "FROM activity a " +
+                        "INNER JOIN category cat ON cat.id = a.category_id " +
+                        "INNER JOIN city ci ON ci.id = a.city_id " +
+                        "INNER JOIN country co ON co.id = ci.country_id " +
+                        "WHERE a.city_id='"+ city.getId() +"'");
         while (resultSet1.next()) {
             city.addActivity(activityManager.convertResultSet2Activity(resultSet1, city));
         }

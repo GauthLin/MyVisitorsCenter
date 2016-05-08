@@ -80,7 +80,7 @@ public class ActivityManagerListener implements ActionListener
 
         // Activity description
         JTextArea activityDescription = new JTextArea();
-        activityDescription.setPreferredSize(new Dimension(300, 100));
+        activityDescription.setLineWrap(true);
         activityDescription.setToolTipText("Description de l'activité");
         JScrollPane activityDescriptionScroll = new JScrollPane(activityDescription);
         secondLine.add(activityDescriptionScroll, BorderLayout.CENTER);

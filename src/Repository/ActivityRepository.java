@@ -59,10 +59,13 @@ public class ActivityRepository
         dbManager.connect();
 
         ResultSet resultSet = dbManager.executeQuery(
-                "SELECT * FROM activity " +
-                        "INNER JOIN category ON category.id = activity.category_id " +
-                        "WHERE activity.id="+ id +" " +
-                        "ORDER BY activity.rating DESC"
+                "SELECT a.name as act_name, a.id as act_id, a.description as act_desc, a.hours as act_hours, a.minutes as act_min, a.rating as act_rating, ci.name as city_name, ci.id as city_id, co.name as country_name, co.id as country_id, cat.name as cat_name, cat.id as cat_id " +
+                        "FROM activity a " +
+                        "INNER JOIN category cat ON cat.id = a.category_id " +
+                        "INNER JOIN city ci ON ci.id = a.city_id " +
+                        "INNER JOIN country co ON co.id = ci.country_id " +
+                        "WHERE a.id = " + id + " " +
+                        "ORDER BY a.id ASC"
         );
 
         City city = new City(
@@ -89,10 +92,13 @@ public class ActivityRepository
         dbManager.connect();
 
         ResultSet resultSet = dbManager.executeQuery(
-                "SELECT * FROM activity " +
-                        "INNER JOIN category ON category.id = activity.category_id " +
+                "SELECT a.name as act_name, a.id as act_id, a.description as act_desc, a.hours as act_hours, a.minutes as act_min, a.rating as act_rating, ci.name as city_name, co.name as country_name, cat.name as cat_name, cat.id as cat_id " +
+                        "FROM activity a " +
+                        "INNER JOIN category cat ON cat.id = a.category_id " +
+                        "INNER JOIN city ci ON ci.id = a.city_id " +
+                        "INNER JOIN country co ON co.id = ci.country_id " +
                         "WHERE city_id="+ city.getId() + " " +
-                        "ORDER BY activity.rating DESC"
+                        "ORDER BY a.rating DESC"
         );
         ArrayList<Activity> activities = new ArrayList<>();
 
@@ -115,11 +121,12 @@ public class ActivityRepository
     public ArrayList<Activity> getActivities() throws SQLException, ClassNotFoundException {
         dbManager.connect();
         ResultSet resultSet = dbManager.executeQuery(
-                "SELECT *, city.name as city_name, country.name as country_name FROM activity " +
-                        "INNER JOIN category ON category.id = activity.category_id " +
-                        "INNER JOIN city ON city.id = activity.city_id " +
-                        "INNER JOIN country ON country.id = city.country_id " +
-                        "ORDER BY activity.id ASC"
+                "SELECT a.name as act_name, a.id as act_id, a.description as act_desc, a.hours as act_hours, a.minutes as act_min, a.rating as act_rating, ci.name as city_name, ci.id as city_id, co.name as country_name, co.id as country_id, cat.name as cat_name, cat.id as cat_id " +
+                        "FROM activity a " +
+                        "INNER JOIN category cat ON cat.id = a.category_id " +
+                        "INNER JOIN city ci ON ci.id = a.city_id " +
+                        "INNER JOIN country co ON co.id = ci.country_id " +
+                        "ORDER BY a.id ASC"
         );
         ArrayList<Activity> activities = new ArrayList<>();
 
