@@ -1,11 +1,14 @@
 package Entity;
 
+/**
+ * Activity class contains all the attribute for an activity
+ */
 public class Activity
 {
     private int id;
     private String name;
     private String description;
-    private Time time;
+    private Time time; // Use to get the time of activity
     private Category category;
     private int rating;
     private City city;

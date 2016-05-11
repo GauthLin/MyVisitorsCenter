@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 /**
  * Deletes the selected countries when the deleteBtn button is clicked.
+ *
  * Also updates the GUI
  */
 public class DeleteCountryListener implements ActionListener {

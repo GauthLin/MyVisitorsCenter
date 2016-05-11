@@ -6,6 +6,11 @@ import Manager.DBManager;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Manage the category db
+ *
+ * Convert the category object to the db or vice versa
+ */
 public class CategoryRepository
 {
     private DBManager dbManager;

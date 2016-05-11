@@ -1,5 +1,8 @@
 package Entity;
 
+/**
+ * Category class
+ */
 public class Category
 {
     private int id;

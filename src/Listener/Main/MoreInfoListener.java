@@ -119,7 +119,7 @@ public class MoreInfoListener implements ActionListener{
              * WEATHER PANEL
              */
             String weatherUrl = "http://api.openweathermap.org/data/2.5/weather?q="+ activity.getCity().getName() +"&apikey=00c682a40aa417713f53449f4e1804de&units=metric";
-            Map<String, String> weatherInfo = getWeatherInfo(weatherUrl);
+            Map<String, String> weatherInfo = getWeatherInfo(weatherUrl); // Get the JSON generated for the url
 
             // Title
             JLabel weatherTitle = new JLabel("Météo à "+ activity.getCity().getName());

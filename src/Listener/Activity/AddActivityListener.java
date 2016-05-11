@@ -17,6 +17,9 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Vector;
 
+/**
+ * Add an activity
+ */
 public class AddActivityListener implements ActionListener
 {
     private final JFrame frame;

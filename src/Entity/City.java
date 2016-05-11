@@ -2,12 +2,15 @@ package Entity;
 
 import java.util.ArrayList;
 
+/**
+ * City class
+ */
 public class City
 {
     private int id;
     private String name;
     private Country country;
-    private final ArrayList<Activity> activityList = new ArrayList<>();
+    private final ArrayList<Activity> activityList = new ArrayList<>(); // Contains all the activity for this city
 
     public City(String name, Country country) {
         this.name = name.toUpperCase();

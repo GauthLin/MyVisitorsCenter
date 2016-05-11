@@ -2,11 +2,14 @@ package Entity;
 
 import java.util.ArrayList;
 
+/**
+ * Country class
+ */
 public class Country
 {
     private int id;
     private String name;
-    private ArrayList<City> cities = new ArrayList<>();
+    private ArrayList<City> cities = new ArrayList<>(); // Contains all the cities of this country
 
     public Country(int id, String name) {
         this.id = id;

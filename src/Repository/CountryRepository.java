@@ -9,6 +9,11 @@ import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Manage the country db
+ *
+ * Convert the Country object to the db or vice versa
+ */
 public class CountryRepository
 {
     private DBManager dbManager;

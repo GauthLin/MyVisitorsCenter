@@ -24,6 +24,7 @@ public class DeleteActivityListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        // Delete the selected activities
         for (Integer i :
                 activitiesTable.getSelectedRows()) {
             DefaultTableModel activitiesModel = (DefaultTableModel) activitiesTable.getModel();

@@ -17,6 +17,11 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Vector;
 
+/**
+ * Show the activity manager when the user click on the button
+ *
+ * All activities are listed
+ */
 public class ActivityManagerListener implements ActionListener
 {
     @Override

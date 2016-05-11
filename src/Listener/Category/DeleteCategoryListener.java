@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+/**
+ * Delete the selected category
+ */
 public class DeleteCategoryListener implements ActionListener
 {
     private final JFrame frame;

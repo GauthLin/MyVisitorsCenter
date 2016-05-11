@@ -9,6 +9,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Manage the city db
+ *
+ * Convert the City object to the db or vice versa
+ */
 public class CityRepository
 {
     private DBManager dbManager;

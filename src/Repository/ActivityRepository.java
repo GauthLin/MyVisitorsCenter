@@ -12,7 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Manage the activity db
  *
+ * Convert the Activity object to the db or vice versa
  */
 public class ActivityRepository
 {

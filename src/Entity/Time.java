@@ -1,5 +1,8 @@
 package Entity;
 
+/**
+ * Time class -> redefine the time for this application
+ */
 public class Time
 {
     private int minutes;

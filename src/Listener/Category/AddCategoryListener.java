@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+/**
+ * Manage the addition of a category
+ */
 public class AddCategoryListener implements ActionListener
 {
     private final JFrame frame;
@@ -28,7 +31,7 @@ public class AddCategoryListener implements ActionListener
             Category newCat = new Category(catNameInput.getText());
             Category cat = new CategoryRepository().insertCategory(newCat);
 
-            // Update the GUI
+            // Update the GUI in a thread
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {

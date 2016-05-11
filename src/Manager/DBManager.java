@@ -12,8 +12,10 @@ public class DBManager
     private Connection connection;
     private Statement statement;
 
+    /**
+     * Connects to the db
+     */
     public void connect(){
-        // Connexion à la base de donnnées.
         try {
             Class.forName("org.sqlite.JDBC");
             SQLiteConfig sqLiteConfig = new SQLiteConfig();
@@ -24,6 +26,9 @@ public class DBManager
         }
     }
 
+    /**
+     * Disconnects from the db
+     */
     public void disconnect(){
         try {
             connection.close();
@@ -32,26 +37,51 @@ public class DBManager
         }
     }
 
+    /**
+     * Executes a query
+     *
+     * @param sql The query to execute
+     * @return the ResultSet of the query
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     public ResultSet executeQuery(String sql) throws SQLException, ClassNotFoundException {
         statement = connection.createStatement();
         return statement.executeQuery(sql);
     }
 
+    /**
+     * Executes an update
+     *
+     * @param sql The query
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     public void executeUpdate(String sql) throws SQLException, ClassNotFoundException {
         statement = connection.createStatement();
         statement.executeUpdate(sql);
     }
 
+    /**
+     * Closes the current statement
+     *
+     * @throws SQLException
+     */
     public void closeCurrentStatement() throws SQLException {
         statement.close();
     }
 
+    /**
+     * Get the current statement
+     *
+     * @return the statement
+     */
     public Statement getStatement() {
         return statement;
     }
 
     /**
-     * Prints the resultSet on the terminal
+     * Prints the any resultSet on the terminal. It was used to debug the db connection and queries
      *
      * @param resultSet The resultSet to print
      * @throws SQLException
